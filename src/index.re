@@ -1,9 +1,17 @@
+/*
+ external glamor : _ = "glamor" [@@bs.module];
+
+ let style = glamor##css({
+   color: "red",
+ })
+ */
 module WholeThing = {
   module Foo = {
     include ReactRe.Component;
     let name = "Foo";
     type props = {message: string};
-    let render {props} => <div> (ReactRe.stringToElement props.message) </div>;
+    let render {props} =>
+      <div style={"color": "red"}> (ReactRe.stringToElement props.message) </div>;
   };
   include ReactRe.CreateComponent Foo;
   let createElement ::message => wrapProps {message: message};

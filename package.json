@@ -1,5 +1,5 @@
 {
-  "name": "rehydrate-example",
+  "name": "sound",
   "version": "0.0.0",
   "description": "",
   "main": "index.js",
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "bs-platform": "https://github.com/bloomberg/bucklescript.git",
+    "glamor": "^2.20.24",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "reason-js": "^0.0.16",
