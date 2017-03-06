@@ -34,13 +34,19 @@ Nuclide is going to mess with your Atom UI a ton so open up Settings > Packages 
 
 ```
 hyperclick
-nuclide-ocaml
-nuclide-language-reason
 nuclide-code-format
-nuclide-type-hint
 nuclide-datatip
 nuclide-definition-hyperclick
+nuclide-language-reason
+nuclide-ocaml
+nuclide-type-hint
 ```
+
+Verify the following things are working:
+- When you delete a semicolon, there are red lines and compile error warnings.
+- When you hover over a variable, a datatip shows up with the type signature.
+- When you change the whitespace in the file and hit save, everything reformats to the way it was before.
+- When you control-click (or command-click) on a variable, it will jump to the definition of that variable.
 
 And now to actually get this project running:
 
@@ -60,23 +66,3 @@ http://facebook.github.io/reason/javaScriptCompared.html
 http://facebook.github.io/reason/index.html
 
 http://facebook.github.io/reason/modules.html
-
-## Questions
-
-- documentation
-  - macros. @@bs syntax. ## syntax
-  - loading external js and re libraries
-  - js browser stuff
-
-- updater is memoized... what about partial application? is it a weak map? https://github.com/reasonml/rehydrate/blob/master/documentation.md#updater
-
-- publishing packages
-- utility packages
-
-# To Do
-
-- load glamor
-- read rehydrate docs
-
-- webpack dev server with htmlplugin
-- typesafe inline styles
