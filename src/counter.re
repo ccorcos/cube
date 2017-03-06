@@ -33,3 +33,7 @@ module Counter = {
       <button onClick=(updater inc)> (ReactRe.stringToElement "+") </button>
     </div>;
 };
+
+include ReactRe.CreateComponent Counter;
+
+let createElement ::decBy ::state ::dispatch => wrapProps {decBy, state, dispatch};

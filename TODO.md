@@ -1,5 +1,12 @@
 # To Do
 
+- re-implement cube
+- webpack dev server with htmlplugin
+- typesafe inline styles
+
+
+## Questions
+
 - seems like `memoizedUpdaterCount` is unused and we instead use `maxMemoizedCount` when we make the array. https://github.com/reasonml/rehydrate/blob/06c409d3fb6334f79cd1e8b9d9916bd8d3d80e84/src/reactRe.re#L282
 
 - if `createElement` is just partially applying `wrapProps`, then why do we even have it?
@@ -10,16 +17,14 @@
 
 - is it possible to define polymorphic functions?
 
+- let mutable variable
 
+- counter problem
 
+- some basic tooling for building a blog
+  - i need to load markdown files from the filesystem. should I do this from markdown? or should I generate Reason files on the fly with a makefile? should I use webpack?
+  - how can i codesplit and asynchronously modules separately?
 
-
-- re-implement cube
-- webpack dev server with htmlplugin
-- typesafe inline styles
-
-
-## Questions
 
 - publishing packages
 - utility packages
