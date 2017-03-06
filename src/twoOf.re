@@ -2,8 +2,16 @@ module type Component = {
   type model;
   let init: model;
   type action;
+  type dispatch = action => unit;
   let update: model => action => model;
-  let createElement: 'view;
+  let createElement:
+    state::model =>
+    dispatch::dispatch =>
+    children::list ReactRe.reactElement =>
+    ref::(ReactRe.reactRef => unit)? =>
+    key::string? =>
+    unit =>
+    ReactRe.reactElement;
 };
 
 module TwoOf (Component: Component) => {
@@ -27,12 +35,12 @@ module TwoOf (Component: Component) => {
       };
       let render {props, updater} =>
         <div>
-          <Component dispatch=(updater one) state=props.state.one />
-          <Component dispatch=(updater two) state=props.state.two />
+          (Component.createElement dispatch::(updater one) state::props.state.one)
+          (Component.createElement dispatch::(updater two) state::props.state.two)
         </div>;
     };
     include ReactRe.CreateComponent TwoOfClass;
-    let createElement ::state ::dispatch => wrapProps {state, dispatch};
+    let createElement = wrapProps;
   };
   let init = {one: Component.init, two: Component.init};
   let update state action =>
