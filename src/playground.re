@@ -40,3 +40,19 @@ module WholeThing = {
   include ReactRe.CreateComponent Foo;
   let createElement ::message => wrapProps {message: message};
 };
+/* module type CoreComponent = {
+     type model;
+     let init: model;
+     type action;
+     let update: state::model => action::action => model;
+   };
+
+   module Core (Comp: CoreComponent) => {
+     let state = Comp.init;
+     let dispatch action => Comp.update ::state ::action;
+     let start {decBy} root = ReactDOMRe.render <Comp dispatch action decBy /> root;
+   };
+
+   let app = Core Counter;
+   let root = ReasonJs.Document.getElementById "index";
+   app.start {decBy: 10} root; */
