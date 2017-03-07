@@ -1,11 +1,37 @@
 # To Do
 
+- Intro to Reason Article
+  - How to install and setup the IDE?
+  - Which docs to read and what to pay attention to?
+  - How to make a simple app?
+  - How to build a composable Elm-like app?
+http://codepen.io/ccorcos/pen/jrxbXA?editors=0010
+
+https://bloomberg.github.io/bucklescript/Manual.html
+
+[%bs.debugger] compiles to debugger
+
+
+try (Some (List.hd my_list)) {
+| Not_found exn => None
+};
+
+
+https://github.com/rickyvetter/rehydrate/tree/redux/examples/redux
+https://github.com/OvermindDL1/bucklescript-tea/tree/master/src
+https://github.com/reasonml/rehydrate/blob/master/documentation.md#component-api
+http://facebook.github.io/reason/modules.html
+http://facebook.github.io/reason/index.html
+
 - re-implement cube
 - webpack dev server with htmlplugin
 - typesafe inline styles
 
 
 ## Questions
+
+- polymorphic functions.
+- list cons patern match.
 
 (3) what if `instanceVars` weren't mutable and were instead returned from functions the same way state works with the updater and lifecycle methods? seems like we could have a returnBag in the same sense that we have a componentBag for updating the component in a functional style. the only funky thing here is we can destructure what we want out of the componentBag, but we have to write out the entire returnBag every time.
 
