@@ -89,7 +89,7 @@ module DeltaCounter = {
   let createElement ::delta => wrapProps {delta: delta};
 };
 
-/* One last example to show how the action event is passed to the update handler */
+/* This example shows how the action event is passed to the update handler */
 module LoginForm = {
   module Component = {
     include ReactRe.Component.Stateful;
@@ -97,12 +97,17 @@ module LoginForm = {
     type props = unit;
     type state = {username: string, password: string};
     let getInitialState _ => {username: "", password: ""};
-    /* blah event##target */
+    /* The event itself is a plain JavaScript object, so you have to use ## instead of . to get the target from the event using BuckleScript syntax. We then use the Reason Document api to get the value from the element. */
     let username {state} event => Some {...state, username: ReasonJs.Document.value event##target};
     let password {state} event => Some {...state, password: ReasonJs.Document.value event##target};
-    /* blah _type */
+    /* prevent the form from actually being submitted and reset the state */
+    let submit _ event => {
+      event##preventDefault ();
+      Some (getInitialState ())
+    };
+    /* `type` is a reserved word in Reason so we have to use `_type` instead. */
     let render {state, updater} =>
-      <div>
+      <form onSubmit=(updater submit)>
         <input
           _type="text"
           placeholder="username"
@@ -115,7 +120,8 @@ module LoginForm = {
           value=state.password
           onChange=(updater password)
         />
-      </div>;
+        <button _type="submit"> (ReactRe.stringToElement "submit") </button>
+      </form>;
   };
   include ReactRe.CreateComponent Component;
   let createElement = wrapProps ();
