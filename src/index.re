@@ -42,18 +42,20 @@ let app =
     <Section title="Title">
       <Tutorial.Title> (ReactRe.stringToElement "Hello JS Interop!") </Tutorial.Title>
     </Section>
-    <Section title="Elmish Counter" />
   </div>;
 
 let () = ReactDOMRe.render app root;
 /*
- module CounterProps = {
-   let decBy = 2;
- };
+ abstract types (type model) vs generic types (type 'model)
+ _ and unit types?
 
- module App1 = Core.Core (Counter.Counter CounterProps);
+  module CounterProps = {
+    let decBy = 2;
+  };
 
- module App2 = Core.Core (TwoOf.TwoOf (Counter.Counter CounterProps));
+  module App1 = Core.Core (Counter.Counter CounterProps);
 
- module App3 = Core.Core (Undoable.Undoable (TwoOf.TwoOf (Counter.Counter CounterProps)));
- /* let () = App3.start (); */ */
+  module App2 = Core.Core (TwoOf.TwoOf (Counter.Counter CounterProps));
+
+  module App3 = Core.Core (Undoable.Undoable (TwoOf.TwoOf (Counter.Counter CounterProps)));
+  /* let () = App3.start (); */ */
