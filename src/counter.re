@@ -6,6 +6,12 @@ module Counter (Props: CounterProps) => {
     | Increment
     | Decrement int;
   type dispatch = action => unit;
+  let init = {count: 0};
+  let update state action =>
+    switch action {
+    | Increment => {count: state.count + 1}
+    | Decrement n => {count: state.count - n}
+    };
   module CounterClass = {
     include ReactRe.Component;
     let name = "Counter";
@@ -25,12 +31,6 @@ module Counter (Props: CounterProps) => {
         <button onClick=(updater inc)> (ReactRe.stringToElement "+") </button>
       </div>;
   };
-  let init = {count: 0};
-  let update state action =>
-    switch action {
-    | Increment => {count: state.count + 1}
-    | Decrement n => {count: state.count - n}
-    };
   include ReactRe.CreateComponent CounterClass;
   let createElement ::state ::dispatch => wrapProps {decBy: Props.decBy, state, dispatch};
 };
