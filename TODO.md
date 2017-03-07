@@ -7,7 +7,23 @@
   - How to build a composable Elm-like app?
 http://codepen.io/ccorcos/pen/jrxbXA?editors=0010
 
-https://bloomberg.github.io/bucklescript/Manual.html
+
+let rec firstN n l =>
+  if (n === 0 || List.length l === 0) {
+    []
+  } else {
+    let h = List.hd l;
+    let t = List.tl l;
+    List.append [h] (firstN (n - 1) t)
+  };
+
+let rec firstN n l =>
+  switch (n, l) {
+  | (0, _) => []
+  | (_, []) => []
+  | (n, [h, ...t]) => List.append [h] (firstN (n - 1) t)
+  };
+
 
 [%bs.debugger] compiles to debugger
 
@@ -20,8 +36,7 @@ try (Some (List.hd my_list)) {
 https://github.com/rickyvetter/rehydrate/tree/redux/examples/redux
 https://github.com/OvermindDL1/bucklescript-tea/tree/master/src
 https://github.com/reasonml/rehydrate/blob/master/documentation.md#component-api
-http://facebook.github.io/reason/modules.html
-http://facebook.github.io/reason/index.html
+
 
 - re-implement cube
 - webpack dev server with htmlplugin

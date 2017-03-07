@@ -1,10 +1,8 @@
 let rec firstN n l =>
-  if (n === 0 || List.length l === 0) {
-    []
-  } else {
-    let h = List.hd l;
-    let t = List.tl l;
-    List.append [h] (firstN (n - 1) t)
+  switch (n, l) {
+  | (0, _) => []
+  | (_, []) => []
+  | (n, [h, ...t]) => [h, ...firstN (n - 1) t]
   };
 
 module Undoable (Component: Core.Component) => {
