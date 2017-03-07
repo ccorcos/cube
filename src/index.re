@@ -42,6 +42,7 @@ let app =
     <Section title="Title">
       <Tutorial.Title> (ReactRe.stringToElement "Hello JS Interop!") </Tutorial.Title>
     </Section>
+    <Section title="Elmish Counter" />
   </div>;
 
 let () = ReactDOMRe.render app root;
