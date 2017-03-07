@@ -126,3 +126,28 @@ module LoginForm = {
   include ReactRe.CreateComponent Component;
   let createElement = wrapProps ();
 };
+
+/* Lastly, let's look at how we might use an NPM package written i JavaScript. We can require a module from NPM using the [@@bs.module] BuckleScript macro. We can define the the type of the module ourselves, but that takes too long so we can assign a "polymorphic type" and the compiler will infer its type based on how you use it. Glamor is a CSS-in-JS library that we'll use as a demonstration. */
+external glamor : 'glamor = "glamor" [@@bs.module];
+
+/* When dealing with plain JavaScript data structures, you have to use ## instead of . and JavaScript objects have quotes around the keys. Here's we're generating a className with the given CSS styles. */
+let title: string =
+  glamor##css {
+    "fontWeight": "bold",
+    "fontSize": "32px",
+    "color": "rgb(6, 49, 111)",
+    "margin": "4px auto 16px auto"
+  };
+
+/* We're just going to create a wrapper component here */
+module Title = {
+  module Component = {
+    include ReactRe.Component;
+    let name = "Title";
+    type props = {children: list ReactRe.reactElement};
+    let render {props} =>
+      <h1 className=title> (props.children |> Array.of_list |> ReactRe.arrayToElement) </h1>;
+  };
+  include ReactRe.CreateComponent Component;
+  let createElement ::children => wrapProps {children: children} ::children;
+};

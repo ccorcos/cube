@@ -1,7 +1,3 @@
-external glamor : 'glamor = "glamor" [@@bs.module];
-
-let style: string = glamor##css {"color": "blue"};
-
 module type CounterProps = {let decBy: int;};
 
 module Counter (Props: CounterProps) => {
