@@ -24,12 +24,14 @@ module Counter (Props: CounterProps) => {
       props.dispatch (Decrement props.decBy);
       None
     };
-    let render {props, updater} =>
+    let render {props, updater} => {
+      Js.log "render Counter";
       <div>
         <button onClick=(updater dec)> (ReactRe.stringToElement "-") </button>
         <span> (ReactRe.stringToElement (string_of_int props.state.count)) </span>
         <button onClick=(updater inc)> (ReactRe.stringToElement "+") </button>
-      </div>;
+      </div>
+    };
   };
   include ReactRe.CreateComponent CounterClass;
   let createElement ::state ::dispatch => wrapProps {decBy: Props.decBy, state, dispatch};
