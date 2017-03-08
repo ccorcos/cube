@@ -9,8 +9,15 @@ module Defs = {
 };
 
 module Styles = {
-  /* let wrap = ""; */
-  let wrap = css {"position": "absolute", "top": 0, "left": 0, "right": 0, "bottom": 0};
+  let wrap =
+    css {
+      "cursor": "all-scroll",
+      "position": "absolute",
+      "top": 0,
+      "left": 0,
+      "right": 0,
+      "bottom": 0
+    };
   let cube =
     css {
       "position": "absolute",
@@ -94,6 +101,7 @@ module Tensor = {
     )
   );
   let sub2 (x1, y1) (x2, y2) => (x1 -. x2, y1 -. y2);
+  let norm2 (x1, y1) (x2, y2) => sqrt (x1 *\* x2 -. y1 *\* y2);
 };
 
 module Css = {

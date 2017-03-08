@@ -1,8 +1,10 @@
 # Cube
 
+![](http://g.recordit.co/Qw4AvSDEG5.gif)
+
 ## To Do
 
-- reimplement the cube!
+- momentum
 - deploy to gh_pages
 
 ## Things to explore
