@@ -117,15 +117,11 @@ Here are some other places you can find some examples:
     ```
 - `[%bs.debugger]` compiles to `debugger` in the browser. You won't see the source mapped back to Reason, but the JavaScript is actually *very* readable!
 
-# To Do
-
-- webpack dev server
-
-## Questions
+# Questions
 
 - What if `instanceVars` weren't mutable but were instead returned from the updater methods along with the state? Maybe call it a `returnBag`.
 
-- It seems like `memoizedUpdaterCount` is unused since you're using `maxMemoizedCount` when we make the array. https://github.com/reasonml/rehydrate/blob/06c409d3fb6334f79cd1e8b9d9916bd8d3d80e84/src/reactRe.re#L282
+- It seems like [`memoizedUpdaterCount` is unused](https://github.com/reasonml/rehydrate/blob/06c409d3fb6334f79cd1e8b9d9916bd8d3d80e84/src/reactRe.re#L282) since you're using `maxMemoizedCount` when we make the array.
 
 - Where can I read about `Obj.magic`, `Js.Null.return`?
 
