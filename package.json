@@ -8,7 +8,7 @@
     "compile": "bsb -make-world -w",
     "dev": "webpack-dev-server --content-base dist",
     "build": "rm -rf dist && bsb -make-world && webpack -p",
-    "clean": "bsb -clean-world && rm src/index.js"
+    "clean": "bsb -clean-world"
   },
   "keywords": [],
   "author": "",
