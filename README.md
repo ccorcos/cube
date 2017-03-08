@@ -1,8 +1,8 @@
-# Sound JavaScript
+# Reasonable
 
 I almost barfed the other day when I tried TypeScript. I built up enough courage to go over to the dark side and try a Microsoft product. Everything seemed great. I got a Redux project up and running and when I opened up the browser... a runtime exception! The whole point of a compiler is to prevent runtime exceptions. And this is why I've decided to adventure off into the world of sound type systems.
 
-So why not Elm or PureScript? Both languages are super cool but both have some parts I'm not as excited about. PureScript uses Bower -- ew! And neither have easy interoperability with external JavaScript libraries. I had a conversation with @chenglou and he absolutely sold me on Reason. So here we go:
+In this tutorial / quick-start / notes, I'm going to be exploring [Reason](https://facebook.github.io/reason/). So why not Elm or PureScript? Both languages are super cool but both have some parts I'm not as excited about. PureScript uses Bower -- ew! And neither have easy interoperability with external JavaScript libraries. I had a conversation with @chenglou and he absolutely sold me on Reason. So here goes nothing!
 
 ## Getting Started
 
@@ -68,15 +68,13 @@ This build system is actually two separate tools. We're using `bucklescript` to 
 
 ## Learning Reason
 
-Reading through the docs is an invaluable experience. There's way more to learn than I'm able to spew on this page. Start at the [Reason homepage](http://facebook.github.io/reason/index.html) and I'd recommend reading the whole thing along with the [Modules section](http://facebook.github.io/reason/modules.html) twice. If you're coming from a JavaScript background, make sure you check out the [JavaScript comparison section](http://facebook.github.io/reason/javaScriptCompared.html).
+Reading through the docs is an invaluable experience:
 
-Reason has a package called [Rehydrate](https://github.com/reasonml/rehydrate) with type definitions for React along with an idiomatic API for creating React components. You'll definitely want to carefully read through the [Rehydrate docs](https://github.com/reasonml/rehydrate/blob/master/documentation.md).
-
-Make sure you understand how JSX works -- it basically just calls the `createElement` function inside a module with labelled arguments.
-
-The `updater` function is an interesting piece. We're going to take a closer look at it later, but it basically just memoizes a reference to the function you pass it so the components can be lazy. The other piece that's nice is it expects an `option state` return type. If you want to update the state, you can simply return a new state without ever having to call `setState`. This approach, along with the `componentBag` that gets passed around let's you write pure functions everywhere which is great!
-
-You don't need to read this right now, but when you start getting into JS interop stuff, all of that happens with [BuckleScript](https://github.com/bloomberg/bucklescript). You can read [the docs](https://bloomberg.github.io/bucklescript/Manual.html) but it's probably not all that helpful to you yet.
+- [Reason documentation](http://facebook.github.io/reason/index.html)
+  - Read the [modules section](http://facebook.github.io/reason/modules.html) twice!
+  - Read the [JavaScript comparison section](http://facebook.github.io/reason/javaScriptCompared.html) as well.
+- [Rehydrate documentation](https://github.com/reasonml/rehydrate/blob/master/documentation.md) (for using React with Reason)
+- [BuckleScript documentation](https://bloomberg.github.io/bucklescript/Manual.html) (for JS interop)
 
 ## Examples
 
