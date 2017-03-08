@@ -8,7 +8,8 @@
     "compile": "bsb -make-world -w",
     "dev": "webpack-dev-server --content-base dist",
     "build": "rm -rf dist && bsb -make-world && webpack -p",
-    "clean": "bsb -clean-world"
+    "clean": "bsb -clean-world",
+    "deploy": "git add -f dist && git commit -m 'deploy' && git subtree push --prefix dist origin gh-pages && git rm -r dist && git commit -m 'cleanup deploy'"
   },
   "keywords": [],
   "author": "",
