@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "bsb -make-world -w",
-    "build": "webpack-dev-server --content-base dist",
+    "start": "concurrently --prefix '[{name}]' --names 'bucklescript,webpack' -c 'bgBlue.bold,bgRed.bold' 'npm run compile' 'npm run dev'",
+    "compile": "bsb -make-world -w",
+    "dev": "webpack-dev-server --content-base dist",
+    "build": "rm -rf dist && bsb -make-world && webpack -p",
     "clean": "bsb -clean-world && rm src/index.js"
   },
   "keywords": [],
@@ -20,6 +22,7 @@
     "rehydrate": "https://github.com/reasonml/rehydrate.git"
   },
   "devDependencies": {
+    "concurrently": "^3.4.0",
     "html-webpack-plugin": "^2.28.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.1"
