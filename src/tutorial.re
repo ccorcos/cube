@@ -34,7 +34,7 @@ module SimpleWrapper = {
     include ReactRe.Component;
     let name = "SimpleWrapper";
     type props = {children: list ReactRe.reactElement};
-    /* HERE style  */
+    /* We specify the styles using a JavaScript object which is different from a record because we're wrapping the keys with quotes. */
     let render {props} =>
       <div style={"color": "red"}> (ReactRe.arrayToElement (Array.of_list props.children)) </div>;
   };
