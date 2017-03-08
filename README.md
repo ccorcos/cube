@@ -1,6 +1,4 @@
-# Cube
-
-![](http://g.recordit.co/Qw4AvSDEG5.gif)
+# Cube [Demo](http://www.chetcorcos.com/cube/)
 
 ## To Do
 
