@@ -20,13 +20,16 @@ let getMouse event => {
   ((event##pageX -. rect##left) /. Defs.size, (event##pageY -. rect##top) /. Defs.size)
 };
 
+/* let init = Tensor.id4; */
+let init = Tensor.id4 |> Tensor.rotateX (-0.55) |> Tensor.rotateY 0.45;
+
 module Cube = {
   module Component = {
     include ReactRe.Component.Stateful;
     let name = "Cube";
     type props = unit;
     type state = {orientation: Tensor.matrix4, mouse: option Tensor.vector2};
-    let getInitialState _ => {orientation: Tensor.id4, mouse: None};
+    let getInitialState _ => {orientation: init, mouse: None};
     let spin oldMouse newMouse orientation => {
       let (dx, dy) = Tensor.sub2 newMouse oldMouse;
       orientation |> Tensor.rotateX ((-1.) *. dy) |> Tensor.rotateY dx
