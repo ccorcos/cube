@@ -2,6 +2,7 @@
 .merlin
 /node_modules/
 /lib/
-*.js
+/src/*.js
 npm-debug.log
 /_build/
+/dist/
