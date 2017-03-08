@@ -1,4 +1,4 @@
-# Reasonable
+# Reason for fun (and profit)
 
 I almost barfed the other day when I tried TypeScript. I built up enough courage to go over to the dark side and try a Microsoft product. Everything seemed great. I got a Redux project up and running and when I opened up the browser... a runtime exception! The whole point of a compiler is to prevent runtime exceptions. And this is why I've decided to adventure off into the world of sound type systems.
 
@@ -74,12 +74,67 @@ Reading through the docs is an invaluable experience:
   - Read the [modules section](http://facebook.github.io/reason/modules.html) twice!
   - Read the [JavaScript comparison section](http://facebook.github.io/reason/javaScriptCompared.html) as well.
 - [Rehydrate documentation](https://github.com/reasonml/rehydrate/blob/master/documentation.md) (for using React with Reason)
-- [BuckleScript documentation](https://bloomberg.github.io/bucklescript/Manual.html) (for JS interop)
+- [BuckleScript Readme](https://github.com/bloomberg/bucklescript) and the [BuckleScript documentation](https://bloomberg.github.io/bucklescript/Manual.html) (for JS interop)
 
 ## Examples
 
 Check out the [`src/tutorial.re`](./src/tutorial.re). I've built up a few different examples that you can check out in your browser.
 
 Here are some other places you can find some examples:
+- [Rehydrate Examples](https://github.com/chenglou/rehydrate-example/tree/master/src)
+- [Redux Example](https://github.com/rickyvetter/rehydrate/tree/redux/examples/redux)
 
-- https://github.com/chenglou/rehydrate-example/tree/master/src
+## Notes / Questions
+
+- What's the difference between an abstract type, a polymorphic type, and a generic type?
+
+- What are the `unit` and `_` types called? What are they used for?
+
+- Leveraging the syntax for fun an profit.
+
+    I need a function that gets the first `n` items off of a list. My first shot looked like this:
+
+    ```re
+    let rec firstN n l =>
+      if (n === 0 || List.length l === 0) {
+        []
+      } else {
+        let h = List.hd l;
+        let t = List.tl l;
+        List.append [h] (firstN (n - 1) t)
+      };
+    ```
+
+    But we can do a lot better. We can pattern match on `n` and `l`, destructure the `hd` and `tl`, and spread into a list rather than using `append`:
+
+    ```re
+    let rec firstN n l =>
+      switch (n, l) {
+      | (0, _) => []
+      | (_, []) => []
+      | (n, [h, ...t]) => [h, ...firstN (n - 1) t]
+      };
+    ```
+- `[%bs.debugger]` compiles to `debugger` in the browser. You won't see the source mapped back to Reason, but the JavaScript is actually *very* readable!
+
+# To Do
+
+- webpack dev server
+
+## Questions
+
+- What if `instanceVars` weren't mutable but were instead returned from the updater methods along with the state? Maybe call it a `returnBag`.
+
+- It seems like `memoizedUpdaterCount` is unused since you're using `maxMemoizedCount` when we make the array. https://github.com/reasonml/rehydrate/blob/06c409d3fb6334f79cd1e8b9d9916bd8d3d80e84/src/reactRe.re#L282
+
+- Where can I read about `Obj.magic`, `Js.Null.return`?
+
+- Can I somehow use Webpack's `import()` for code splitting and async module loading?
+
+- How should I handle compiled assets? I have markdown files that I want to parse at compile-time to generate React components. Should I just use a Makefile to generate `.re` files that are `.gitignore`'d? Or are there any compile-time facilities?
+
+- How does publishing Reason packages work?
+
+- Can I use native OCaml libraries? Where are they? How can I use them? Will they compile to JavaScript? How can I build a native server that doesn't compile to JavaScript?
+
+- How can I write some simple unit test?

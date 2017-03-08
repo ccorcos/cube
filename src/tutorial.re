@@ -152,7 +152,7 @@ module Title = {
   let createElement ::children => wrapProps {children: children} ::children;
 };
 
-/* The rest of this tutorial is more of an exploration into building an application with an Elm-like architecture. Basically implementing what's going on in this CodePen: http://codepen.io/ccorcos/pen/jrxbXA?editors=0010 */
+/* The rest of this tutorial is more of an exploration into building an application with an Elm-like architecture. Proceed at your own risk! I'm basically implementing what's going on in this CodePen: http://codepen.io/ccorcos/pen/jrxbXA?editors=0010 */
 module type Component = {
   type model;
   type action;
