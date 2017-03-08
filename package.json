@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "bsb -make-world -w",
-    "build": "webpack -w",
+    "build": "webpack-dev-server --content-base dist",
     "clean": "bsb -clean-world && rm src/index.js"
   },
   "keywords": [],
