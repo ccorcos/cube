@@ -1,5 +1,29 @@
 # To Do
 
+- refactor the elmish examples
+- explain types in the readme
+- look at other examples
+
+abstract types (type model) vs generic types (type 'model)
+wait, whats a polymorphic type?
+_ and unit types?
+
+a polymorphic type would be a variant
+type a = | Int int | Str string
+
+`'a`  simply means "I don't know the type - figure it out"
+
+So naturally, when defining polymorphic functions, if you leave the types as 'a, it will figure out that it is polymorphic. You can then ensure that it's polymorphic by actually requiring polymorphism using 'a .
+
+
+let foo (x : 'a) => Js.log "wow";
+
+foo 1;
+
+foo "a";
+
+compiles
+
 - Intro to Reason Article
   - How to install and setup the IDE?
   - Which docs to read and what to pay attention to?

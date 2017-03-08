@@ -151,3 +151,204 @@ module Title = {
   include ReactRe.CreateComponent Component;
   let createElement ::children => wrapProps {children: children} ::children;
 };
+
+/* The rest of this tutorial is more of an exploration into building an application with an Elm-like architecture. Basically implementing what's going on in this CodePen: http://codepen.io/ccorcos/pen/jrxbXA?editors=0010 */
+module type Component = {
+  type model;
+  type action;
+  let init: model;
+  type dispatch = action => unit;
+  let update: model => action => model;
+  let createElement:
+    state::model =>
+    dispatch::dispatch =>
+    children::list ReactRe.reactElement =>
+    ref::(ReactRe.reactRef => unit)? =>
+    key::string? =>
+    unit =>
+    ReactRe.reactElement;
+};
+
+/* Its a bit annoying that we can't dynamically create a module, but we need to create modules that satisfy the `createElement` type signature, so this is the only way we can get the props in there. */
+module type CounterProps = {let decBy: int;};
+
+module ElmishCounter (Props: CounterProps) => {
+  type model = {count: int};
+  type action =
+    | Increment
+    | Decrement int;
+  type dispatch = action => unit;
+  let init = {count: 0};
+  let update state action =>
+    switch action {
+    | Increment => {count: state.count + 1}
+    | Decrement n => {count: state.count - n}
+    };
+  module CounterClass = {
+    include ReactRe.Component;
+    let name = "Counter";
+    type props = {decBy: int, state: model, dispatch};
+    let inc {props} _ => {
+      props.dispatch Increment;
+      None
+    };
+    let dec {props} _ => {
+      props.dispatch (Decrement props.decBy);
+      None
+    };
+    let render {props, updater} => {
+      Js.log "render Counter";
+      <div>
+        <button onClick=(updater dec)> (ReactRe.stringToElement "-") </button>
+        <span> (ReactRe.stringToElement (string_of_int props.state.count)) </span>
+        <button onClick=(updater inc)> (ReactRe.stringToElement "+") </button>
+      </div>
+    };
+  };
+  include ReactRe.CreateComponent CounterClass;
+  let createElement ::state ::dispatch => wrapProps {decBy: Props.decBy, state, dispatch};
+};
+
+/* Here's the core logic that holds the single-atom state and bootstraps the application. */
+module Core (Component: Component) => {
+  module CoreClass = {
+    include ReactRe.Component.Stateful;
+    let name = "Core";
+    type props = unit;
+    type state = Component.model;
+    let getInitialState _ => Component.init;
+    let dispatch {state} action => Some (Component.update state action);
+    let render {state, updater} => <Component dispatch=(updater dispatch) state />;
+  };
+  include ReactRe.CreateComponent CoreClass;
+  let createElement = wrapProps ();
+};
+
+/* Super awkward how you have to specify the props with a module like this... */
+module CounterProps = {
+  let decBy = 2;
+};
+
+/* But here goes nothing! */
+module ElmishCounterApp = Core (ElmishCounter CounterProps);
+
+/* Here's another way we can build Core without using another React component. I don't like it as much but it's an interesting demonstration of in-place muttion so I'll leave it here for the reader in case they want to check it out. This way is more aligned with the CodePen implementation. */
+module OldCore (Component: Component) => {
+  type store = {mutable state: Component.model};
+  let store = {state: Component.init};
+  let root = ReasonJs.Document.getElementById "index";
+  let rec dispatch action => {
+    store.state = Component.update store.state action;
+    render store.state
+  }
+  and render state => ReactDOMRe.render <Component dispatch state /> root;
+  let start _ => render store.state;
+};
+
+/* Here's a little combinator that accepts a component and creates two of them. */
+module TwoOf (Component: Component) => {
+  type model = {one: Component.model, two: Component.model};
+  type action =
+    | One Component.action
+    | Two Component.action;
+  type dispatch = action => unit;
+  let init = {one: Component.init, two: Component.init};
+  let update state action =>
+    switch action {
+    | One a => {...state, one: Component.update state.one a}
+    | Two a => {...state, two: Component.update state.two a}
+    };
+  module TwoOfClass = {
+    include ReactRe.Component;
+    let name = "TwoOf";
+    type props = {state: model, dispatch};
+    let one {props} action => {
+      props.dispatch (One action);
+      None
+    };
+    let two {props} action => {
+      props.dispatch (Two action);
+      None
+    };
+    let render {props, updater} =>
+      <div>
+        <Component dispatch=(updater one) state=props.state.one />
+        <Component dispatch=(updater two) state=props.state.two />
+      </div>;
+  };
+  include ReactRe.CreateComponent TwoOfClass;
+  let createElement ::state ::dispatch => wrapProps {state, dispatch};
+};
+
+/* Here we're composing with the TwoOf combinator! */
+module TwoOfElmishCounterApp = Core (TwoOf (ElmishCounter CounterProps));
+
+/* The List methods aren't all the full featured so we have to make this ourselves. */
+let rec firstN n l =>
+  switch (n, l) {
+  | (0, _) => []
+  | (_, []) => []
+  | (n, [h, ...t]) => [h, ...firstN (n - 1) t]
+  };
+
+/* This combinator makes a component undoable! */
+module Undoable (Component: Component) => {
+  type model = {time: int, states: list Component.model};
+  let init = {time: 0, states: [Component.init]};
+  type action =
+    | Undo
+    | Redo
+    | Child Component.action;
+  type dispatch = action => unit;
+  let update state action => {
+    let {time, states} = state;
+    switch action {
+    | Undo => {states, time: time - 1}
+    | Redo => {states, time: time + 1}
+    | Child a => {
+        time: time + 1,
+        states: {
+          let currentState = List.nth states time;
+          let nextState = Component.update currentState a;
+          let history = firstN (time + 1) states;
+          List.append history [nextState]
+        }
+      }
+    }
+  };
+  module UndoableClass = {
+    include ReactRe.Component;
+    let name = "Undoable";
+    type props = {state: model, dispatch};
+    let undo {props} _ => {
+      props.dispatch Undo;
+      None
+    };
+    let redo {props} _ => {
+      props.dispatch Redo;
+      None
+    };
+    let child {props} a => {
+      props.dispatch (Child a);
+      None
+    };
+    let render {props, updater} => {
+      let {time, states} = props.state;
+      let canUndo = time > 0;
+      let canRedo = time < List.length states - 1;
+      <div>
+        <button onClick=(updater undo) disabled=(Js.Boolean.to_js_boolean (not canUndo))>
+          (ReactRe.stringToElement "undo")
+        </button>
+        <button onClick=(updater redo) disabled=(Js.Boolean.to_js_boolean (not canRedo))>
+          (ReactRe.stringToElement "redo")
+        </button>
+        <Component state=(List.nth states time) dispatch=(updater child) />
+      </div>
+    };
+  };
+  include ReactRe.CreateComponent UndoableClass;
+  let createElement ::state ::dispatch => wrapProps {state, dispatch};
+};
+
+module UndoableTwoOfElmishCounterApp = Core (Undoable (TwoOf (ElmishCounter CounterProps)));

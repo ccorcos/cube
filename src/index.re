@@ -1,4 +1,4 @@
-/* Getting the div we want to render */
+/* Read tutorial.re */
 let root = ReasonJs.Document.getElementById "index";
 
 external glamor : 'glamor = "glamor" [@@bs.module];
@@ -42,20 +42,11 @@ let app =
     <Section title="Title">
       <Tutorial.Title> (ReactRe.stringToElement "Hello JS Interop!") </Tutorial.Title>
     </Section>
+    <Section title="ElmishCounter"> <Tutorial.ElmishCounterApp /> </Section>
+    <Section title="TwoOf ElmishCounter"> <Tutorial.TwoOfElmishCounterApp /> </Section>
+    <Section title="Undoable TwoOf ElmishCounter">
+      <Tutorial.UndoableTwoOfElmishCounterApp />
+    </Section>
   </div>;
 
 let () = ReactDOMRe.render app root;
-/*
- abstract types (type model) vs generic types (type 'model)
- _ and unit types?
-
-  module CounterProps = {
-    let decBy = 2;
-  };
-
-  module App1 = Core.Core (Counter.Counter CounterProps);
-
-  module App2 = Core.Core (TwoOf.TwoOf (Counter.Counter CounterProps));
-
-  module App3 = Core.Core (Undoable.Undoable (TwoOf.TwoOf (Counter.Counter CounterProps)));
-  /* let () = App3.start (); */ */
