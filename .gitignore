@@ -1,8 +1,0 @@
-.DS_Store
-.merlin
-/node_modules/
-/lib/
-/src/*.js
-npm-debug.log
-/_build/
-/dist/
