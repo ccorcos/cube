@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently --prefix '[{name}]' --names 'bucklescript,webpack' -c 'bgBlue.bold,bgRed.bold' 'npm run compile' 'npm run dev'",
+    "start": "concurrently --prefix '[{name}]' --names 'bucklescript,webpack' -c 'bgBlue.bold,bgMagenta.bold' 'npm run compile' 'npm run dev'",
     "compile": "bsb -make-world -w",
     "dev": "webpack-dev-server --content-base dist",
     "build": "rm -rf dist && bsb -make-world && webpack -p",

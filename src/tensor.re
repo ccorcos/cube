@@ -82,3 +82,9 @@ let mult4
 let sub2 (x1, y1) (x2, y2) => (x1 -. x2, y1 -. y2);
 
 let norm2 (x1, y1) (x2, y2) => sqrt (x1 *\* x2 -. y1 *\* y2);
+
+let rotateX a m => mult4 m (rotationX a |> rotation4d);
+
+let rotateY a m => mult4 m (rotationY a |> rotation4d);
+
+let rotateZ a m => mult4 m (rotationZ a |> rotation4d);

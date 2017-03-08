@@ -29,9 +29,7 @@ module Cube = {
     let getInitialState _ => {orientation: Tensor.id4, mouse: None};
     let spin oldMouse newMouse orientation => {
       let (dx, dy) = Tensor.sub2 newMouse oldMouse;
-      let spinX = Tensor.rotationX ((-1.) *. dy) |> Tensor.rotation4d;
-      let spinY = Tensor.rotationY dx |> Tensor.rotation4d;
-      Tensor.mult4 (Tensor.mult4 orientation spinY) spinX
+      orientation |> Tensor.rotateX ((-1.) *. dy) |> Tensor.rotateY dx
     };
     let mouseDown {state} event => {
       let mouse = getMouse event;
