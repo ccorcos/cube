@@ -30,3 +30,5 @@ let face =
     "width": Defs.size,
     "position": "absolute"
   };
+
+let drawing = css {"flex": 1, "cursor": "crosshair", "border": "1px solid black"};
