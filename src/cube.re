@@ -10,16 +10,6 @@ let front = Css.translate3d (0., 0., half);
 
 let back = Css.translate3d (0., 0., nhalf);
 
-/* TODO this should belong in Reason and should be typed out */
-external getBoundingClientRect : ReasonJs.Document.element => 'fuckit =
-  "getBoundingClientRect" [@@bs.send];
-
-/* TODO add types for `pageX` and `pageY` on event. Should be int, not float. */
-let getMouse event => {
-  let rect = getBoundingClientRect event##currentTarget;
-  ((event##pageX -. rect##left) /. Defs.size, (event##pageY -. rect##top) /. Defs.size)
-};
-
 /* let init = Tensor.id4; */
 let init = Tensor.id4 |> Tensor.rotateX (-0.55) |> Tensor.rotateY 0.45;
 
@@ -35,18 +25,18 @@ module Cube = {
       orientation |> Tensor.rotateX ((-1.) *. dy) |> Tensor.rotateY dx
     };
     let mouseDown {state} event => {
-      let mouse = getMouse event;
+      let mouse = Cursor.getMouse event;
       Some {...state, mouse: Some mouse}
     };
     let mouseMove {state} event => {
-      let mouse = getMouse event;
+      let mouse = Cursor.getMouse event;
       switch state.mouse {
       | None => None
       | Some p => Some {orientation: spin p mouse state.orientation, mouse: Some mouse}
       }
     };
     let mouseUp {state} event => {
-      let mouse = getMouse event;
+      let mouse = Cursor.getMouse event;
       switch state.mouse {
       | None => None
       | Some p => Some {orientation: spin p mouse state.orientation, mouse: None}

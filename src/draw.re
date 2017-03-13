@@ -15,7 +15,6 @@ module Drawing = {
   module Component = {
     include ReactRe.Component.Stateful;
     let name = "Drawing";
-    type props = unit;
     type style = {stroke: string, strokeWidth: int};
     type point = Tensor.vector2;
     type path = {style, points: list point};
@@ -55,14 +54,68 @@ module Drawing = {
       path: {...state.path, points: []},
       paths: [state.path, ...state.paths]
     };
-    let start point state => state |> clearRedo |> pushPoint point;
-    let move point state => state |> pushPoint point;
-    let stop point state => state |> pushPoint point |> pushPath;
+    let start state point => state |> clearRedo |> pushPoint point;
+    let move state point => state |> pushPoint point;
+    let stop state point => state |> pushPoint point |> pushPath;
     let undo state => {...state, time: state.time + 1};
     let redo state => {...state, time: state.time - 1};
-    /* HERE */
-    let render _ => <svg className=Styles.drawing />;
+    let mouseDown {state} event => Some (Cursor.getMouse event |> start state);
+    let mouseMove {state} event => Some (Cursor.getMouse event |> move state);
+    let mouseUp {state} event => Some (Cursor.getMouse event |> stop state);
+    type drawBag = {
+      onMouseDown: ReactRe.event => unit,
+      onMouseMove: ReactRe.event => unit,
+      onMouseUp: ReactRe.event => unit,
+      state
+    };
+    type props = {view: drawBag => ReactRe.reactElement};
+    let render {props, state, updater} =>
+      props.view {
+        onMouseDown: updater mouseDown,
+        onMouseMove: updater mouseMove,
+        onMouseUp: updater mouseUp,
+        state
+      };
   };
   include ReactRe.CreateComponent Component;
-  let createElement = wrapProps ();
+  let createElement ::view => wrapProps {view: view};
 };
+
+module ChooseColor = {
+  module Component = {
+    include ReactRe.Component;
+  };
+  /* include ReactRe.CreateComponent Component; */
+  /* let createElement ::view => wrapProps {view: view}; */
+};
+/*
+ const ColorPalette = (props) => {
+   const colors = colorOptions.map(color =>
+     <div
+       style={{
+         backgroundColor: color,
+         height: 24,
+         width: 24,
+         borderRadius: 24,
+         margin: 5,
+         borderWidth: 1,
+         borderColor: 'black',
+         borderStyle: 'solid',
+         opacity: props.state.getIn(['style', 'stroke']) === color ? 1 : 0.3,
+       }}
+       key={color}
+       onClick={() => props.onStyle({stroke: color})}
+     />
+   )
+   return (
+     <div
+       style={{
+         display: 'flex',
+         alignItems: 'center',
+       }}
+     >
+       <span>Colors:</span>
+       {colors}
+     </div>
+   )
+ } */
